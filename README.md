@@ -1,12 +1,21 @@
 # Livewire-4
 This is the 'Everything New in Livewire 4' Course by Caleb Porzio on Laracast
 
-# Running App
+## Running App
 
 cd Livewire-4
 
 composer run dev
 
+## Installations
+
+Installing Flux: https://fluxcd.io/flux/installation/
+```
+composer require livewire/flux
+```
+
+<br>
+<br>
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
