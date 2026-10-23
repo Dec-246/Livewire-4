@@ -5,7 +5,10 @@ This is the 'Everything New in Livewire 4' Course by Caleb Porzio on Laracast
 
 cd Livewire-4
 
+```
 composer run dev
+npm run dev
+```
 
 ## Installations
 
@@ -13,6 +16,15 @@ Installing Flux: https://fluxcd.io/flux/installation/
 ```
 composer require livewire/flux
 ```
+
+Vite for building frontend assets:
+```
+npm install
+npm run dev
+```
+
+Use sidebar templates from Flux website here:
+https://fluxui.dev/layouts/sidebar
 
 <br>
 <br>
