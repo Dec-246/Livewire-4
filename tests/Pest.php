@@ -14,11 +14,11 @@ use Tests\TestCase;
 |
 */
 
-pest()->browser()->headed();
+// pest()->browser()->headed(); //shows browser test visually
 
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
-    ->in('Feature');
+    ->in('Feature', '../resources/views');
 
 /*
 |--------------------------------------------------------------------------

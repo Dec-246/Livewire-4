@@ -1,27 +1,3 @@
-<?php
-
-use Livewire\Component;
-use App\Models\Post;
-use Livewire\Attributes\Layout;
-
-new #[Layout('layouts::app', ['title' => 'Create post'])] class extends Component
-{
-    public $title = '';
-
-    public $content = '';
-
-    public function save()
-    {
-        Post::create($this->validate([
-            'title' => 'required|min:3',
-            'content' => 'required',
-        ]));
-
-        $this->redirect('/');
-    }
-};
-?>
-
 {{-- ----------------------------- TEXT  -------------------------------- --}}
 <form wire:submit="save" class="w-96 space-y-6">
 

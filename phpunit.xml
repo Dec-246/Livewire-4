@@ -5,9 +5,14 @@
          colors="true"
 >
     <testsuites>
+        <testsuite name="Components">
+            <directory suffix=".test.php">resources/views</directory>
+        </testsuite>
+
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
         </testsuite>
+
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
