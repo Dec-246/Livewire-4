@@ -60,3 +60,7 @@ php artisan livewire:convert {name_of_component}
 - Filament: server driven admin panel and app builder for Laravel. Allows to generate CRUD interfaces, dashboards and forms from PHP classes rather than hand writing Blade views and controllers.
 - Filament is a Composer Package that depends on LiveWire, Alpine.js, Tailwind, CSS. Its a flagship example of the TALL stack (Tailwind, Alpine, Laravel, Livewire).
 - Every Filament page, resource page is LiveWire component.
+
+## Bundling Lazy Requests
+
+There are different methods of lazy loading content. Some of which involve either loading a few bits of data (or posts in this case) and then lazy loading the rest or lazy loading all posts from DB.
