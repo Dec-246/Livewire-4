@@ -1,23 +1,31 @@
 <?php
 
-use Livewire\Component;
 use App\Models\Post;
-use Livewire\Attributes\Layout;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Lazy;
+use Livewire\Attributes\Title;
+use Livewire\Component;
 
-new #[Layout('layouts::app', ['title' => 'Create post'])] class extends Component
+// using Lazy attribute - causing small delay to load all contents at same time
+new #[Lazy, Title('Posts')] class extends Component
 {
-    public $title = '';
+    public string $sort = 'newest';
 
-    public $content = '';
-
-    public function save()
+    #[Computed]
+    public function posts()
     {
         sleep(1);
-        Post::create($this->validate([
-            'title' => 'required|min:3',
-            'content' => 'required',
-        ]));
+        return Post::query()
+        ->tap(fn ($q) => match ($this->sort) {
+            'oldest' => $q->orderBy('created_at', 'asc'),
+            'popular' => $q->orderBy('views', 'desc'),
+            default => $q->latest(),
+        })
+        ->get();
+    }
 
-        $this->redirect('/');
+    public function delete(Post $post)
+    {
+        $post->delete();
     }
 };
