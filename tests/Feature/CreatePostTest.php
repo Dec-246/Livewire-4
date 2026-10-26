@@ -16,11 +16,12 @@ test ('example', function() {
         'content' => 'Test content',
     ]);
 
-    Livewire::test('pages::post.create')
-        ->set('title', 'Test title')
-        ->set('content', 'Test content')
-        ->call('save')
-        ->assertRedirect('/');
+    visit('/post/create')
+        ->debug() // can use debug to find errors in a browser test
+        ->type('[wire\:model="title"]', 'Test title')
+        ->type('[wire\:model="content"]', 'Test content')
+        ->press('Save')
+        ->assertPathIs('/');
 
         assertDatabaseHas(Post::class, [
         'title' => 'Test title',
