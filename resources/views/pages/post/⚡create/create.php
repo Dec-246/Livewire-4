@@ -12,6 +12,7 @@ new #[Layout('layouts::app', ['title' => 'Create post'])] class extends Componen
 
     public function save()
     {
+        sleep(1);
         Post::create($this->validate([
             'title' => 'required|min:3',
             'content' => 'required',
