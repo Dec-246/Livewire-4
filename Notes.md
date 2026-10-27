@@ -18,7 +18,7 @@ php artisan livewire:convert {name_of_component}
 
 ## Basics
 - View based components, similar with Laravel Volt
-- Is a larval package
+- Is a laraval package
 - Can create interactive and dynamic UIs, can auto adjust UI based on user input.
 - Like using blade templates but much better
 - Used to make highly interactive components (forms, tables, charts etc)
@@ -86,3 +86,17 @@ Then to use/ reference this slot in UI:
 <!-- using the name attribute directly to fetch the slot -->
 {{ $slots['checkbox'] }}
 ```
+
+## Optimistic UI with wire:show/ wire:cloak/ wire:text
+
+**wire:show**
+wire:show hides/shows an element in the browser only — no server trip, no data changes. It just checks a condition (like selected.length > 0) and flips display: none on or off, instantly, the same way Alpine's x-show does.
+
+Compare to wire:model.live, which sends a request to the server every time it changes. wire:show never does that — it's pure UI, free and instant.
+
+**wire:cloak**
+wire:cloak hides an element only until the page has finished loading and Alpine/Livewire has booted up. It's there to stop a flash of content showing briefly in the wrong state before everything's ready.
+
+Compare to wire:show, which reacts to your data changing. wire:cloak doesn't care about data at all — it only cares about "has the page finished loading yet?"
+
+To remember: wire:cloak = hide until ready, prevents a flash on page load.

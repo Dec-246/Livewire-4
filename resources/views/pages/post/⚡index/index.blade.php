@@ -8,15 +8,15 @@
         <div class="flex gap-2">
 
             {{-- if count of selected array is more than zero, show how many selected and option to delete those selected --}}
-            @if (count($this->selected) > 0)
-                <div class="max-lg:hidden flex justify-start items-center gap-2">
+
+                <div wire:show="selected.length > 0" wire:cloak class="max-lg:hidden flex justify-start items-center gap-2">
                     <flux:subheading class="whitespace-nowrap">
-                        <span>{{ count($this->selected) }}</span> selected:
+                        <span wire:text="selected.length"></span> selected:
                     </flux:subheading>
 
                     <flux:button size="sm" variant="danger" icon="trash" wire:click="deleteSelected">Delete</flux:button>
                 </div>
-            @endif
+
 
             <div class="max-lg:hidden flex justify-start items-center gap-2">
                 <flux:subheading class="whitespace-nowrap">Sort by:</flux:subheading>
@@ -56,7 +56,7 @@
             {{-- :class="$post->status === 'draft' ? 'border-dashed' : '' " --}}
             >
             <livewire:slot name="checkbox">
-                <flux:checkbox wire:model.live="selected" :value="$post->id" />
+                <flux:checkbox wire:model="selected" :value="$post->id" />
             </livewire:slot>
     </livewire:pages::post.card>
         @endforeach
