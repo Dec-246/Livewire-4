@@ -17,11 +17,10 @@ test ('example', function() {
     ]);
 
     visit('/post/create')
-        ->debug() // can use debug to find errors in a browser test
         ->type('[wire\:model="title"]', 'Test title')
         ->type('[wire\:model="content"]', 'Test content')
         ->press('Save')
-        ->assertPathIs('/');
+        ->assertPathIs('/posts');
 
         assertDatabaseHas(Post::class, [
         'title' => 'Test title',

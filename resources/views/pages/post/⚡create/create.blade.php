@@ -6,8 +6,8 @@
     <flux:textarea wire:model="content" label="Content" placeholder="Write your post content" />
 
     <flux:radio.group wire:model="status" label="status" variant="cards" class="max-sm:flex-col">
-        <flux:radio value="draft" label="Draft" description="Post will be saved as draft" checked/>
-        <flux:radio value="published" label="Published" description="Post will be published immediately" />
+        <flux:radio value="0" label="Draft" description="Post will be saved as draft" checked/>
+        <flux:radio value="1" label="Published" description="Post will be published immediately" />
     </flux:radio.group>
 
 

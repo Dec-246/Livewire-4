@@ -6,6 +6,18 @@
         </div>
 
         <div class="flex gap-2">
+
+            {{-- if count of selected array is more than zero, show how many selected and option to delete those selected --}}
+            @if (count($this->selected) > 0)
+                <div class="max-lg:hidden flex justify-start items-center gap-2">
+                    <flux:subheading class="whitespace-nowrap">
+                        <span>{{ count($this->selected) }}</span> selected:
+                    </flux:subheading>
+
+                    <flux:button size="sm" variant="danger" icon="trash" wire:click="deleteSelected">Delete</flux:button>
+                </div>
+            @endif
+
             <div class="max-lg:hidden flex justify-start items-center gap-2">
                 <flux:subheading class="whitespace-nowrap">Sort by:</flux:subheading>
 
@@ -18,17 +30,35 @@
 
             <flux:separator vertical class="max-lg:hidden mx-2 my-2" />
 
+            <flux:dropdown>
+                <flux:button size="sm" icon:trailing="chevron-down">
+                    {{ $this->statusFilter === null ? 'Status Filter' : \App\Enums\StatusEnum::from($this->statusFilter)->label() }}
+                </flux:button>
+                <flux:menu>
+                    <flux:menu.item wire:click="filterByStatus(null)">All</flux:menu.item>
+                    @foreach ($this->statuses() as $status)
+                        <flux:menu.item icon="{{ $status->icon() }}" wire:click="filterByStatus({{ $status->value }})">{{ $status->label() }}</flux:menu.item>
+                    @endforeach
+                </flux:menu>
+            </flux:dropdown>
+
             <flux:button variant="primary" icon="plus" size="sm" href="/post/create">New post</flux:button>
         </div>
     </div>
 
-    <div class="mt-8 grid grid-cols-3 gap-6 [&:has([data-dim-sorting],[data-loading])_&]:opacity-50">
+    <div class="mt-8 grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-6 [*:has([data-dim-sorting],[data-loading])_&]:opacity-50">
         @foreach ($this->posts as $post)
             <livewire:pages::post.card :$post
-                :wire:key="$post->id"
-                {{-- load the firs six and lazy load the rest of the posts --}}
-                :lazy.bundle="$loop->iteration > 6"
-            />
+            :wire:key="$post->id"
+            {{-- load the firs six and lazy load the rest of the posts --}}
+            :lazy.bundle="$loop->iteration > 6"
+            :class="$this->bgClass($post->status->value)"
+            {{-- :class="$post->status === 'draft' ? 'border-dashed' : '' " --}}
+            >
+            <livewire:slot name="checkbox">
+                <flux:checkbox wire:model.live="selected" :value="$post->id" />
+            </livewire:slot>
+    </livewire:pages::post.card>
         @endforeach
     </div>
 </div>

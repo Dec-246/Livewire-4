@@ -8,5 +8,5 @@ Route::get('/', function () {
 
 // use :: to reference files from directories instead of classes
 // 'Route/ endpoint', 'name of livewire component'
-Route::livewire('/post/create', 'pages::post.create');
-Route::livewire('/posts', 'pages::post.index');
+Route::livewire('/post/create', 'pages::post.create')->name('post.create');
+Route::livewire('/posts', 'pages::post.index')->name('post.index');

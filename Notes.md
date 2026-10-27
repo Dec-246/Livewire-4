@@ -64,3 +64,25 @@ php artisan livewire:convert {name_of_component}
 ## Bundling Lazy Requests
 
 There are different methods of lazy loading content. Some of which involve either loading a few bits of data (or posts in this case) and then lazy loading the rest or lazy loading all posts from DB.
+
+## slots
+
+In Livewire, you can mention specific slot sections of code like the following...
+
+Creating the slot:
+
+```
+<!-- using the name attribute to be able to uniquely identify this slot -->
+<livewire:slot name="checkbox">
+
+    <flux:checkbox wire:model.live="selected" :value="$post->id" />
+
+</livewire:slot>
+```
+
+Then to use/ reference this slot in UI:
+
+```
+<!-- using the name attribute directly to fetch the slot -->
+{{ $slots['checkbox'] }}
+```

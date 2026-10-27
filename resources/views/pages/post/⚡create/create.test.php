@@ -21,7 +21,7 @@ test ('example', function() {
         ->type('[wire\:model="title"]', 'Test title')
         ->type('[wire\:model="content"]', 'Test content')
         ->press('Save')
-        ->assertPathIs('/');
+        ->assertPathIs('/posts');
 
         assertDatabaseHas(Post::class, [
         'title' => 'Test title',
