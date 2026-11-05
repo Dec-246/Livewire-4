@@ -9,6 +9,7 @@
 
             {{-- if count of selected array is more than zero, show how many selected and option to delete those selected --}}
 
+            {{-- wire-cloak hides content until related UI content is selected - used for displaying delete button when posts selected --}}
                 <div wire:show="selected.length > 0" wire:cloak class="max-lg:hidden flex justify-start items-center gap-2">
                     <flux:subheading class="whitespace-nowrap">
                         <span wire:text="selected.length"></span> selected:
