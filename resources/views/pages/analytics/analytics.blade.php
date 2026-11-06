@@ -67,19 +67,16 @@ new #[Title('Analytics')] class extends Component
     <div class="mt-8 grid grid-cols-3 gap-6 relative">
 
         {{-- can add named property so that all islands travel together in codebase (given the names are the same) --}}
-        @island(name: 'metrics')
-            <x-pages::analytics.metric heading="Views" :number="$this->views" :change="12">
-            </x-pages::analytics.metric>
-        @endisland
+        @island(name: 'metrics', lazy: true)
+            @placeholder
+                <flux:skeleton class="h-30" animate="shimmer" />
+                <flux:skeleton class="h-30" animate="shimmer" />
+                <flux:skeleton class="h-30" animate="shimmer" />
+            @endplaceholder
 
-        @island(name: 'metrics')
-            <x-pages::analytics.metric heading="Visitors" :number="$this->visitors" :change="8">
-            </x-pages::analytics.metric>
-        @endisland
-
-        @island(name: 'metrics')
-            <x-pages::analytics.metric heading="Avg time on post" :number="$this->avgTime" :change="-3">
-            </x-pages::analytics.metric>
+            <x-pages::analytics.metric heading="Views" :number="$this->views" :change="12" />
+            <x-pages::analytics.metric heading="Visitors" :number="$this->visitors" :change="8" />
+            <x-pages::analytics.metric heading="Avg time on post" :number="$this->avgTime" :change="-3" />
         @endisland
 
         <div class="absolute top-0 bottom-0 left-[100%] pl-4 flex">

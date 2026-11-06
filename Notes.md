@@ -100,3 +100,21 @@ wire:cloak hides an element only until the page has finished loading and Alpine/
 Compare to wire:show, which reacts to your data changing. wire:cloak doesn't care about data at all — it only cares about "has the page finished loading yet?"
 
 To remember: wire:cloak = hide until ready, prevents a flash on page load.
+
+## Islands
+
+An Island in Livewire 4 is an isolated, independently updating region within Livewire component
+
+### Named Islands
+
+A named island is a way of adding a named property to island/s so that  all islands travel together in codebase (given the names are the same). A use case of this can be creating multiple named islands and then referencing that name in a button that refreshes the said islands collectively.
+
+### Lazy islands
+
+using lazy islands means component loads first then island content is loaded secondly. This is done by adding Lazy prop to islands (lazy: true)
+
+additionally, adding the @placeholder tag within an island means we have loading UI styles for consistent indication of UI responsiveness to user.
+
+![using @placeholder for island loading indicator](<Screenshot 2026-11-06 at 16.39.31.png>)
+
+We can optionally use (defer: true) to delay the content from loading until the content is within the viewport.
