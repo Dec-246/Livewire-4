@@ -10,3 +10,5 @@ Route::get('/', function () {
 // 'Route/ endpoint', 'name of livewire component'
 Route::livewire('/post/create', 'pages::post.create')->name('post.create');
 Route::livewire('/posts', 'pages::post.index')->name('post.index');
+Route::livewire('/analytics', 'pages::analytics.analytics')->name('post.analytics');
+

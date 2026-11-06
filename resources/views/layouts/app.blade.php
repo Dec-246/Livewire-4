@@ -25,6 +25,7 @@
             <flux:sidebar.item icon="home" href="/" :current="request()->is('/')">Home</flux:sidebar.item>
             <flux:sidebar.item icon="document-text" href="{{ route('post.index') }}" :current="request()->routeIs('post.index')">Posts</flux:sidebar.item>
             <flux:sidebar.item icon="plus" href="{{ route('post.create') }}" :current="request()->routeIs('post.create')">New post</flux:sidebar.item>
+            <flux:sidebar.item icon="chart-bar" href="{{ route('post.analytics') }}" :current="request()->routeIs('post.analytics')">Analytics</flux:sidebar.item>
             <flux:sidebar.item icon="inbox" badge="12" href="#">Inbox</flux:sidebar.item>
             <flux:sidebar.item icon="calendar" href="#">Calendar</flux:sidebar.item>
 
