@@ -64,9 +64,12 @@ new #[Title('Analytics')] class extends Component
         </div>
     </div>
 
+    {{-- can use styling such as 'mt-[100vh]' alongside lazy prop to trigger islands loading when it's within users viewport.
+    We can alternatively use this styling with the defer prop instead to not wait for the content to be within users viewport to load content. --}}
     <div class="mt-8 grid grid-cols-3 gap-6 relative">
 
         {{-- can add named property so that all islands travel together in codebase (given the names are the same) --}}
+        {{-- The lazy prop means data loading inside islands doesn't slow down the rest of screen loading. --}}
         @island(name: 'metrics', lazy: true)
             @placeholder
                 <flux:skeleton class="h-30" animate="shimmer" />
