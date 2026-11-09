@@ -70,14 +70,22 @@ new #[Title('Analytics')] class extends Component
 
         {{-- can add named property so that all islands travel together in codebase (given the names are the same) --}}
         {{-- The lazy prop means data loading inside islands doesn't slow down the rest of screen loading. --}}
-        @island(name: 'metrics', lazy: true)
+        {{-- setting always prop to true means any time the parent renders, make sure child renders, too.
+        this means the metrics update in this app when the dates are changed in the dopdown above. --}}
+        @island(name: 'metrics', lazy: true, always: true )
             @placeholder
                 <flux:skeleton class="h-30" animate="shimmer" />
                 <flux:skeleton class="h-30" animate="shimmer" />
                 <flux:skeleton class="h-30" animate="shimmer" />
             @endplaceholder
 
-            <x-pages::analytics.metric heading="Views" :number="$this->views" :change="12" />
+            {{-- poll will hit this nested island and self-refresh --}}
+            @island(always: true)
+                {{-- wire:poll triggers refresh of entire component unless used in nested island.
+                The poll is enabled in metric.blade.php as the tag states which file to reference. --}}
+                <x-pages::analytics.metric wire:poll.5s heading="Views" :number="$this->views" :change="12" />
+            @endisland
+
             <x-pages::analytics.metric heading="Visitors" :number="$this->visitors" :change="8" />
             <x-pages::analytics.metric heading="Avg time on post" :number="$this->avgTime" :change="-3" />
         @endisland

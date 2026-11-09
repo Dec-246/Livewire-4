@@ -118,3 +118,7 @@ additionally, adding the @placeholder tag within an island means we have loading
 ![using @placeholder for island loading indicator](<Screenshot 2026-11-06 at 16.39.31.png>)
 
 We can optionally use (defer: true) to delay the content from loading until the content is within the viewport.
+
+### Nested Islands
+
+wire:poll triggers refresh of entire component unless used inside nested island then will only frequently update that nested island. We can additionally use wire:poll.5s to only update the data every 5s or whenever required.

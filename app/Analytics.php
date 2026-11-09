@@ -32,7 +32,8 @@ class Analytics
     {
         return (int) Post::query()
             ->where('created_at', '>=', $this->since())
-            ->sum('views');
+            // using random numbers to simulate real world stats
+            ->sum('views') + rand(100, 1000);
     }
 
     public function visitors(): int
