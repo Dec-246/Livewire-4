@@ -3,11 +3,16 @@
 use App\Analytics;
 use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Computed;
 
 new #[Title('Analytics')] class extends Component
 {
+    // setting default value for period dropdown
     public string $period = 'month';
+
+    #[Url]
+    public int $postsPage = 1;
 
     #[Computed]
     public function views()
@@ -30,7 +35,7 @@ new #[Title('Analytics')] class extends Component
     #[Computed]
     public function topPosts()
     {
-        return Analytics::period($this->period)->topPosts();
+        return Analytics::period($this->period)->topPosts(limit: $this->postsPage * 5);
     }
 
     #[Computed]
@@ -44,11 +49,27 @@ new #[Title('Analytics')] class extends Component
     {
         return Analytics::period($this->period)->trafficSources();
     }
+
+    // update posts table to first 5 rows when period dropdown value changed
+    public function updating($property)
+    {
+        if ($property === 'period') {
+            $this->reset('postsPage');
+
+            $this->renderIsland('posts');
+        }
+    }
+
+    public function loadMorePosts()
+    {
+        $this->postsPage++;
+    }
 };
 ?>
 
 <div class="max-w-5xl [&:has([data-dim-selecting][data-loading])>:not(:first-child)]:opacity-75 transition-opacity">
     <div class="flex items-center justify-between">
+
         <div>
             <flux:heading size="xl">Analytics</flux:heading>
             <flux:text class="mt-2">Track your website traffic and performance</flux:text>
@@ -63,6 +84,7 @@ new #[Title('Analytics')] class extends Component
             </flux:select>
         </div>
     </div>
+
 
     {{-- can use styling such as 'mt-[100vh]' alongside lazy prop to trigger islands loading when it's within users viewport.
     We can alternatively use this styling with the defer prop instead to not wait for the content to be within users viewport to load content. --}}
@@ -95,6 +117,7 @@ new #[Title('Analytics')] class extends Component
         </div>
     </div>
 
+
     <flux:card class="mt-8">
         <flux:heading size="lg">Top posts</flux:heading>
         <flux:text class="mt-1.5">The most viewed posts on your website</flux:text>
@@ -107,16 +130,22 @@ new #[Title('Analytics')] class extends Component
             </flux:table.columns>
 
             <flux:table.rows>
-                @foreach ($this->topPosts as $post)
-                    <flux:table.row>
-                        <flux:table.cell>{{ $post->title }}</flux:table.cell>
-                        <flux:table.cell class="whitespace-nowrap">{{ $post->created_at->format('j M, Y') }}</flux:table.cell>
-                        <flux:table.cell>{{ number_format($post->page_views_count) }}</flux:table.cell>
-                    </flux:table.row>
-                @endforeach
+                @island(name: 'posts')
+                    @foreach ($this->topPosts as $post)
+                        <flux:table.row>
+                            <flux:table.cell>{{ $post->title }}</flux:table.cell>
+                            <flux:table.cell class="whitespace-nowrap">{{ $post->created_at->format('j M, Y') }}</flux:table.cell>
+                            <flux:table.cell>{{ number_format($post->page_views_count) }}</flux:table.cell>
+                        </flux:table.row>
+                    @endforeach
+                @endisland
             </flux:table.rows>
         </flux:table>
+
+        {{-- can use wire:island.append to add more posts to the bottom of the table when user clicks 'load more' button --}}
+        <flux:button wire:click="loadMorePosts" wire:island="posts" class="mt-4 w-full" size="sm" variant="subtle" icon="chevron-down">Load more</flux:button>
     </flux:card>
+
 
     <div class="mt-8 grid grid-cols-3 gap-6">
         <flux:card class="col-span-2">
@@ -138,6 +167,7 @@ new #[Title('Analytics')] class extends Component
         </div>
     </flux:card>
 
+
     <flux:card class="col-span-1">
         <flux:heading size="lg">Traffic sources</flux:heading>
         <flux:text class="mt-1.5">The sources of traffic to your website</flux:text>
@@ -151,6 +181,8 @@ new #[Title('Analytics')] class extends Component
             @endforeach
         </div>
     </flux:card>
+
+
 </div>
 </div>
 
