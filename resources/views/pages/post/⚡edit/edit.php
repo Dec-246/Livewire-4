@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Post;
+use App\Models\Tag;
+use Illuminate\Support\Facades\Validator;
+use Livewire\Attributes\Json;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -31,5 +34,15 @@ new #[Title('Edit post')] class extends Component
         ]));
 
         $this->redirect('/posts');
+    }
+
+    // Json makes the call for geting tags async, has own error handling, won't rerender whole component
+    #[Json]
+    public function getTags($query = '')
+    {
+    // validator built to fail
+        // Validator::make(['foo' => ''], ['foo' => 'required'])->validate();
+
+        return Tag::where('name', 'like', '%' . $query . '%')->get();
     }
 };

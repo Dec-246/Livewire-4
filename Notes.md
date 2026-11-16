@@ -122,3 +122,11 @@ We can optionally use (defer: true) to delay the content from loading until the 
 ### Nested Islands
 
 wire:poll triggers refresh of entire component unless used inside nested island then will only frequently update that nested island. We can additionally use wire:poll.5s to only update the data every 5s or whenever required.
+
+## JavaScript
+
+### Tracking Dirty State
+
+Dirty State: any data existing in UI that not sent to backend yet
+
+wire:dirty.class can be used to turn unsaved text red

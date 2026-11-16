@@ -3,7 +3,11 @@
 
     <flux:input wire:model="title" label="Title" placeholder="Your post title" />
 
-    <flux:textarea wire:ref="content" wire:model="content" label="Content" placeholder="Write your post content" />
+    <label>Tags</label>
+    <input type="text" wire:ref="tags">
+
+    {{--  wire:dirty.class can be used to turn unsaved text red --}}
+    <flux:textarea wire:ref="content" wire:model="content" wire:dirty.class="text-red-500!" label="Content" placeholder="Write your post content" />
 
     <flux:radio.group wire:model="status" label="status" variant="cards" class="max-sm:flex-col">
         <flux:radio value="0" label="Draft" description="Post will be saved as draft" />
@@ -21,3 +25,11 @@
         </button>
     </div>
 </form>
+
+@assets
+
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
+
+@endassets
+
