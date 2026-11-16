@@ -5,6 +5,10 @@ use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Session;
+use Livewire\Attributes\Renderless;
+use Livewire\Attributes\Async;
+
 
 new #[Title('Analytics')] class extends Component
 {
@@ -14,57 +18,87 @@ new #[Title('Analytics')] class extends Component
     #[Url]
     public int $postsPage = 1;
 
-    #[Computed]
-    public function views()
-    {
-        return Analytics::period($this->period)->views();
-    }
-
-    #[Computed]
-    public function visitors()
-    {
-        return Analytics::period($this->period)->visitors();
-    }
-
-    #[Computed]
-    public function avgTime()
-    {
-        return Analytics::period($this->period)->avgTime();
-    }
 
     #[Computed]
     public function topPosts()
     {
         return Analytics::period($this->period)->topPosts(limit: $this->postsPage * 5);
-    }
-
-    #[Computed]
-    public function topCountries()
-    {
-        return Analytics::period($this->period)->topCountries();
-    }
-
-    #[Computed]
-    public function trafficSources()
-    {
-        return Analytics::period($this->period)->trafficSources();
-    }
-
-    // update posts table to first 5 rows when period dropdown value changed
-    public function updating($property)
-    {
-        if ($property === 'period') {
-            $this->reset('postsPage');
-
-            $this->renderIsland('posts');
         }
-    }
 
-    public function loadMorePosts()
-    {
-        $this->postsPage++;
-    }
-};
+        #[Computed]
+        public function topCountries()
+        {
+            return Analytics::period($this->period)->topCountries();
+        }
+
+
+        #[Computed]
+        public function trafficSources()
+        {
+            return Analytics::period($this->period)->trafficSources();
+        }
+
+        #[Computed]
+        public function metrics()
+        {
+            return [
+                'views' => [
+                    'heading' => 'views',
+                    'number' => Analytics::period($this->period)->views(),
+                    'change' => 12,
+                ],
+
+                'visitors' => [
+                    'heading' => 'Visitors',
+                    'number' => Analytics::period($this->period)->visitors(),
+                    'change' => 8,
+                ],
+
+                'time' => [
+                    'heading' => 'Avg time on post',
+                    'number' => Analytics::period($this->period)->avgTime(),
+                    'change' => -3,
+                ],
+            ];
+        }
+
+        // session saves positions of metric islands. sessions store changes.
+        #[Session]
+        public $sortedMetrics = [
+            'views',
+            'visitors',
+            'time',
+        ];
+
+        // creating function to move the metric islands around.| Async fires request in parallel - optimises UI and reduces reloading symbols.
+        #[Renderless, Async]
+        public function handleSort($item, $position)
+        {
+            // 1.  Remove item from current home...
+            $this->sortedMetrics = array_diff($this->sortedMetrics, [$item]);
+
+            // 2. Re-index to close the gap...
+            $this->sortedMetrics = array_values($this->sortedMetrics);
+
+            // 3. Splice the item into the new spot...
+            array_splice($this->sortedMetrics, $position, 0, $item);
+        }
+
+        // update posts table to first 5 rows when period dropdown value changed
+        public function updating($property)
+        {
+            if ($property === 'period') {
+                $this->reset('postsPage');
+
+                $this->renderIsland('posts');
+            }
+        }
+
+        public function loadMorePosts()
+        {
+            $this->postsPage++;
+        }
+    };
 ?>
 
 <div class="max-w-5xl [&:has([data-dim-selecting][data-loading])>:not(:first-child)]:opacity-75 transition-opacity">
@@ -88,7 +122,7 @@ new #[Title('Analytics')] class extends Component
 
     {{-- can use styling such as 'mt-[100vh]' alongside lazy prop to trigger islands loading when it's within users viewport.
     We can alternatively use this styling with the defer prop instead to not wait for the content to be within users viewport to load content. --}}
-    <div class="mt-8 grid grid-cols-3 gap-6 relative">
+    {{-- <div class="mt-8 grid grid-cols-3 gap-6 relative"> --}}
 
         {{-- can add named property so that all islands travel together in codebase (given the names are the same) --}}
         {{-- The lazy prop means data loading inside islands doesn't slow down the rest of screen loading. --}}
@@ -96,26 +130,43 @@ new #[Title('Analytics')] class extends Component
         this means the metrics update in this app when the dates are changed in the dopdown above. --}}
         @island(name: 'metrics', lazy: true, always: true )
             @placeholder
+            <div class="mt-8 grid grid-cols-3 gap-6 relative" wire:key="placeholder">
                 <flux:skeleton class="h-30" animate="shimmer" />
                 <flux:skeleton class="h-30" animate="shimmer" />
                 <flux:skeleton class="h-30" animate="shimmer" />
+            </div>
             @endplaceholder
 
+            <div class="mt-8 grid grid-cols-3 gap-6 relative" wire:sort="handleSort">
+                @foreach ($this->sortedMetrics as $name)
+                    <x-pages::analytics.metric
+                        :wire:key="$name"
+                        :wire:sort:item="$name"
+                        :heading="$this->metrics[$name]['heading']"
+                        :number="$this->metrics[$name]['number']"
+                        :change="$this->metrics[$name]['change']"
+                        />
+                @endforeach
+
+                <div wire:sort:ignore class="absolute top-0 bottom-0 left-[100%] pl-4 flex">
+                    <flux:button wire:click="$refresh" wire:island="metrics" icon="arrow-path" variant="subtle" size="sm" />
+                </div>
+            </div>
+        @endisland
+
+
             {{-- poll will hit this nested island and self-refresh --}}
-            @island(always: true)
+            {{-- @island(always: true) --}}
                 {{-- wire:poll triggers refresh of entire component unless used in nested island.
                 The poll is enabled in metric.blade.php as the tag states which file to reference. --}}
-                <x-pages::analytics.metric wire:poll.5s heading="Views" :number="$this->views" :change="12" />
+                {{-- <x-pages::analytics.metric wire:poll.5s heading="Views" :number="$this->views" :change="12" />
             @endisland
 
             <x-pages::analytics.metric heading="Visitors" :number="$this->visitors" :change="8" />
-            <x-pages::analytics.metric heading="Avg time on post" :number="$this->avgTime" :change="-3" />
-        @endisland
+            <x-pages::analytics.metric heading="Avg time on post" :number="$this->avgTime" :change="-3" /> --}}
 
-        <div class="absolute top-0 bottom-0 left-[100%] pl-4 flex">
-            <flux:button wire:click="$refresh" wire:island="metrics" icon="arrow-path" variant="subtle" size="sm" />
-        </div>
-    </div>
+
+    {{-- </div> --}}
 
 
     <flux:card class="mt-8">
