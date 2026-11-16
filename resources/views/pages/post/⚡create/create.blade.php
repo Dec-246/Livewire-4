@@ -3,7 +3,7 @@
 
     <flux:input wire:model="title" label="Title" placeholder="Your post title" />
 
-    <flux:textarea wire:model="content" label="Content" placeholder="Write your post content" />
+    <flux:textarea wire:ref="content" wire:model="content" label="Content" placeholder="Write your post content" />
 
     <flux:radio.group wire:model="status" label="status" variant="cards" class="max-sm:flex-col">
         <flux:radio value="0" label="Draft" description="Post will be saved as draft" checked/>

@@ -32,7 +32,18 @@
 
 
 
-            <div class="flex justify-end mt-2">
+            <div class="flex justify-end mt-2 gap-2">
+                @if ($post->status === \App\Enums\StatusEnum::Draft)
+                    <flux:button
+                    size="sm"
+                    variant="filled"
+                    icon="pencil"
+                    href="{{ route('post.edit', $post) }}"
+                    >
+                    Edit
+                </flux:button>
+                @endif
+
                 <flux:button
                 size="sm"
                 variant="danger"
