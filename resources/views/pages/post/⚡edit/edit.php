@@ -34,6 +34,7 @@ new #[Title('Edit post')] class extends Component
         ]));
 
         $this->redirect('/posts');
+        $this->js('showUpdateSuccess');
     }
 
     // Json makes the call for geting tags async, has own error handling, won't rerender whole component

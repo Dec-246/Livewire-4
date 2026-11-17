@@ -17,12 +17,15 @@
 
 {{-- ----------------------------- SAVE  -------------------------------- --}}
 
-    <div class="flex justify-end has-data-loading:bg-black:fg-white">
-        <button type="submit" class="data-loading:opacity-50 items-center font-medium justify-center gap-2 whitespace-nowrap justify-center h-10 text-sm rounded-lg ps-4 pe-4 inline-flex" variant="primary">
+    <div class="flex justify-end has-data-loading:bg-black:fg-white gap-2">
+
+        <flux:button wire:click="$js.deletePost" variant="danger">Delete</flux:button>
+
+        <flux:button type="submit" class="data-loading:opacity-50 items-center font-medium justify-center gap-2 whitespace-nowrap justify-center h-10 text-sm rounded-lg ps-4 pe-4 inline-flex" variant="primary">
             Update post
 
             <flux:icon.loading variant="micro" class="not-in-data-loading:hidden" />
-        </button>
+        </flux:button>
     </div>
 </form>
 
