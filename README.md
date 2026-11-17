@@ -12,6 +12,10 @@ This is the 'Everything New in Livewire 4' Course by Caleb Porzio on Laracast
 
 ![Create Post screen](image-2.png)
 
+### Creating tags for posts
+
+![creating custom tags](image-6.png)
+
 ### Viewing all posts
 
 ![view posts screen](image-3.png)
