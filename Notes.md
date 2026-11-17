@@ -125,8 +125,42 @@ wire:poll triggers refresh of entire component unless used inside nested island 
 
 ## JavaScript
 
+
 ### Tracking Dirty State
 
 Dirty State: any data existing in UI that not sent to backend yet
 
 wire:dirty.class can be used to turn unsaved text red
+
+
+### Action Interceptors
+
+An interceptor intercepts a request that goes to server. A use case is using an intercepter on a delete button to intercept the delete action and we can post a log message to console element.
+
+using ``` this.intercept ``` is interchangeable with ``` this.interceptMessage ``` or ``` this.interceptRequest ``
+
+We can use lifecycle hooks during the intercept process so that we can carry out different actions depending on if a button was clicked and the process for that button resulted in error/ onSuccess/ onSend/ onFinish/ onReceived
+
+A clear intercept looks like this...
+
+```
+this.intercept('delete', ({ action, onSend, onFinish, onSuccess, onError }) => {
+    onSend(() => {
+        document.body.style.opacity = '.5'
+    })
+
+    onSuccess(() => {
+        document.body.style.background = 'green'
+    })
+
+    onError(() => {
+        document.body.style.background = 'red'
+    })
+
+    onFinish(() => {
+        document.body.style.opacity = '1'
+    })
+
+    console.log('deleting...', action)
+})
+```
