@@ -3,7 +3,26 @@ This is the 'Everything New in Livewire 4' Course by Caleb Porzio on Laracast
 
 ## App UI
 
+
+### User Interface
+
 ![user interface](image-1.png)
+
+### Creating Post
+
+![Create Post screen](image-2.png)
+
+### Viewing all posts
+
+![view posts screen](image-3.png)
+
+### Analytics screen
+
+![Post analytics](image-4.png)
+
+### Customising metric islands layout
+
+![Moving around metric cards](image-5.png)
 
 
 ## Running App
