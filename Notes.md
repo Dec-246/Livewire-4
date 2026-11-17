@@ -137,9 +137,9 @@ wire:dirty.class can be used to turn unsaved text red
 
 An interceptor intercepts a request that goes to server. A use case is using an intercepter on a delete button to intercept the delete action and we can post a log message to console element.
 
-using ``` this.intercept ``` is interchangeable with ``` this.interceptMessage ``` or ``` this.interceptRequest ``
+using ``` this.intercept ``` is interchangeable with ``` this.interceptMessage ``` or ``` this.interceptRequest ```
 
-We can use lifecycle hooks during the intercept process so that we can carry out different actions depending on if a button was clicked and the process for that button resulted in error/ onSuccess/ onSend/ onFinish/ onReceived
+We can use lifecycle hooks during the intercept process so that we can carry out different actions depending on if a button was clicked and the process for that button resulted in error/ onSuccess/ onSend/ onFinish/ onReceived/ onRedirect
 
 A clear intercept looks like this...
 
@@ -162,5 +162,35 @@ this.intercept('delete', ({ action, onSend, onFinish, onSuccess, onError }) => {
     })
 
     console.log('deleting...', action)
+})
+```
+
+** For more info on Livewire Actions, please consult the official docs, https://livewire.laravel.com/docs/4.x/javascript#action-interceptors **
+
+
+### Request Interceptors
+
+https://livewire.laravel.com/docs/4.x/javascript#request-interceptors
+
+We can use request interceptors for multiple useful reasons, a few being to handle a stale browser request (if a user has had a website open for long period of time, session goes stale, we can handle the session cookie)
+
+```
+this.interceptRequest(({ action, onError }) => {
+
+    onError(({ response, preventDefault }) => {
+
+        if (response.status === 419) {
+            preventDefault()
+
+            alert('Page expired !!')
+        }
+        
+    })
+
+    onRedirect(({ url, preventDefault }) => {
+        preventDefault()
+
+        console.log(url)
+    })
 })
 ```
