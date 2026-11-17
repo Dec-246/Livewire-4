@@ -165,7 +165,8 @@ this.intercept('delete', ({ action, onSend, onFinish, onSuccess, onError }) => {
 })
 ```
 
-* For more info on Livewire Actions, please consult the official docs, https://livewire.laravel.com/docs/4.x/javascript#action-interceptors *
+**
+For more info on Livewire Actions, please consult the official docs, https://livewire.laravel.com/docs/4.x/javascript#action-interceptors **
 
 
 ### Request Interceptors
